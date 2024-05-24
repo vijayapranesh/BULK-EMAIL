@@ -13,7 +13,7 @@ function Signup() {
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("http://localhost:4001/api/auth/register", {
+      await axios.post("https://bulk-email-3dtj.onrender.com/api/auth/register", {
         username,
         email,
         password,

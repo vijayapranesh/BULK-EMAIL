@@ -36,7 +36,7 @@ function EmailSender() {
     }
 
     try {
-      await axios.post("http://localhost:4001/api/email/send", formData, {
+      await axios.post("https://bulk-email-3dtj.onrender.com/api/email/send", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -12,7 +12,7 @@ function Logout() {
       if (token) {
         try {
           await axios.post(
-            "http://localhost:4001/api/auth/logout",
+            "https://bulk-email-3dtj.onrender.com/api/auth/logout",
             { token },
             {
               headers: {

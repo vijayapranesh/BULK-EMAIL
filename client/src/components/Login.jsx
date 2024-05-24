@@ -16,7 +16,7 @@ function Login() {
     setError("");
     try {
       const response = await axios.post(
-        "http://localhost:4001/api/auth/login",
+        "https://bulk-email-3dtj.onrender.com/api/auth/login",
         { email, password }
       );
 
