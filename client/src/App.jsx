@@ -18,7 +18,7 @@ function App() {
         <Route path="/logout" Component={Logout} />
         <Route exact path="/" component={Login} />
         <Route path="*" element={<NotFound />} />
-        <Route component={NotFound} /> 
+        <Route component={NotFound} />
       </Routes>
     </div>
   );

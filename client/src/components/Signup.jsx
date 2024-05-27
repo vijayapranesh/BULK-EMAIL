@@ -2,22 +2,27 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
-import pic1 from "../assets/b.png";
+import pic1 from "../assets/taday2.jpg";
+import "./mix.css";
 
 function Signup() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [passShow, setPassShow] = useState(false);
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
     try {
-      await axios.post("https://bulk-email-3dtj.onrender.com/api/auth/register", {
-        username,
-        email,
-        password,
-      });
+      await axios.post(
+        "https://bulk-email-3dtj.onrender.com/api/auth/register",
+        {
+          username,
+          email,
+          password,
+        }
+      );
       toast.success("Signup Successful");
       navigate("/login");
     } catch (error) {
@@ -27,12 +32,29 @@ function Signup() {
 
   return (
     <>
-      <div style={{ display: "flex", alignItems: "center", flexWrap: "wrap" }}>
-        <div style={{ paddingLeft: "1em" }} className="min-w-0 flex-1">
-          <h2 className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight">
-            Bulk Email transactional
+      <div
+        style={{
+          display: "flex",
+          alignItems: "center",
+          flexWrap: "wrap",
+          backgroundColor: "#F4EDFD",
+          height: "100vh",
+        }}
+      >
+        <div
+          style={{ paddingLeft: "1em", textAlign: "center" }}
+          className="min-w-0 flex-1"
+        >
+          <h2
+            style={{ color: "#2F326A" }}
+            className="text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:text-3xl sm:tracking-tight"
+          >
+            <span style={{ color: "#06A3DD" }}>Bulk Email</span> transactional
           </h2>
-          <p style={{marginTop:'1em'}} class="font-sans ...">
+          <p
+            style={{ marginTop: "1em", color: "blueviolet" }}
+            class="font-sans ..."
+          >
             Using a bulk email sender can be a highly effective method for
             expanding your Email Lead Generation endeavors. By leveraging this
             technique, you can reach a substantial, focused audience of
@@ -92,7 +114,7 @@ function Signup() {
                 </div>
               </div>
 
-              <div>
+              <div className="form_input">
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="password"
@@ -102,14 +124,20 @@ function Signup() {
                   </label>
                   <div className="text-sm"></div>
                 </div>
-                <div className="mt-2">
+                <div className="mt-2 two">
                   <input
-                    type="password"
+                    type={!passShow ? "password" : "text"}
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
                     className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
                   />
+                  <div
+                    className="showpass"
+                    onClick={() => setPassShow(!passShow)}
+                  >
+                    {!passShow ? "Show" : "Hide"}
+                  </div>
                 </div>
               </div>
 

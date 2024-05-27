@@ -1,0 +1,20 @@
+.form_input .two {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.form_input .showpass {
+  position: absolute;
+  right: 0;
+  top: -10px;
+  padding: 5px 10px;
+  margin-right: 1px;
+  margin-top: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2a4365;
+  background-color: #edf2f7;
+  border-radius: 5px;
+  cursor: pointer;
+}

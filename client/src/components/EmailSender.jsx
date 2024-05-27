@@ -36,11 +36,15 @@ function EmailSender() {
     }
 
     try {
-      await axios.post("https://bulk-email-3dtj.onrender.com/api/email/send", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
+      await axios.post(
+        "https://bulk-email-3dtj.onrender.com/api/email/send",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
       toast.success("Email sent successfully");
       // alert("Email sent successfully")
     } catch (error) {
