@@ -74,4 +74,72 @@ router.post("/logout", async (req, res) => {
   }
 });
 
+// forgot-password route
+
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res
+        .status(404)
+        .json({ message: "User with given email does not exist." });
+    }
+
+    const resetToken = crypto.randomBytes(32).toString("hex");
+    const resetLink = `${process.env.CLIENT_URL}/reset-password/${resetToken}`;
+
+    user.resetToken = resetToken;
+    user.resetTokenExpire = Date.now() + 3600000; // Token expires in 1 hour
+    await user.save();
+
+    await sendEmail(
+      user.email,
+      "Password Reset Request",
+      `Please use the following link to reset your password: ${resetLink}`
+    );
+
+    res.json({
+      message: "Password reset link has been sent to your email.",
+      user,
+    });
+  } catch (error) {
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+});
+
+// reset-password route
+
+router.post("/reset-password", async (req, res) => {
+  const { token, newPassword } = req.body;
+  try {
+    const user = await User.findOne({
+      resetToken: token,
+      resetTokenExpire: { $gt: Date.now() } //added
+    });
+
+    console.log(user);
+
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    // if (user.resetTokenExpire < Date.now()) {
+    //   return res.status(400).json({ message: "Invalid or expired token" });
+    // }   //removed
+
+    // Hash the new password
+    const salt = await bcrypt.genSalt(10);
+    // user.password = await bcrypt.hash(newPassword, salt);
+    user.password = req.body.newPassword
+    user.resetToken = undefined; // Clear the reset token
+    user.resetTokenExpire = undefined; // Clear the token expiration
+    await user.save();
+
+    res.json({ message: "Password has been reset successfully" });
+  } catch (error) {
+    res.status(500).json({ message: "Server error. Please try again later." });
+  }
+});
+
+
 module.exports = router;
