@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import pic1 from "../assets/taday1.jpg";
+import Loading from "./Loading";
+import Error from "./Error";
 import "./mix.css";
 
 function Login() {
@@ -10,12 +12,15 @@ function Login() {
   const [passShow, setPassShow] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
+    setLoading("true");
+
     try {
       const response = await axios.post(
         "https://bulk-email-3dtj.onrender.com/api/auth/login",
@@ -27,8 +32,13 @@ function Login() {
       navigate("/email-sender");
     } catch (error) {
       setError(error.response?.data?.message || "Failed to login");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
+  if (error) return <Error message={error} />;
 
   return (
     <>
@@ -105,6 +115,15 @@ function Login() {
                   >
                     Password
                   </label>
+                  <div className="text-sm">
+                    <a
+                      href="#"
+                      onClick={() => navigate("/forgot-password")}
+                      className="font-semibold text-indigo-600 hover:text-indigo-500"
+                    >
+                      Forgot password?
+                    </a>
+                  </div>
                 </div>
                 <div className="mt-2 two">
                   <input

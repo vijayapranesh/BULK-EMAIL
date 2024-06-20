@@ -3,6 +3,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import pic1 from "../assets/taday2.jpg";
+import Loading from "./Loading";
+import Error from "./Error";
 import "./mix.css";
 
 function Signup() {
@@ -10,10 +12,15 @@ function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [passShow, setPassShow] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleSignup = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+
     try {
       await axios.post(
         "https://bulk-email-3dtj.onrender.com/api/auth/register",
@@ -26,9 +33,14 @@ function Signup() {
       toast.success("Signup Successful");
       navigate("/login");
     } catch (error) {
-      toast.error("Failed to register");
+      setError(error.response?.data?.message || "Failed to signup");
+    } finally {
+      setLoading(false);
     }
   };
+
+  if (loading) return <Loading />;
+  if (error) return <Error message={error} />;
 
   return (
     <>
